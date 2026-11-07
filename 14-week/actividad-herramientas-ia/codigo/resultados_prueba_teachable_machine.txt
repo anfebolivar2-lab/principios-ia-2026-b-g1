@@ -1,0 +1,10 @@
+gato_test0.jpg => 100%,0%
+gato_test1.jpg => 100%,0%
+gato_test2.jpg => 100%,0%
+gato_test3.jpg => 100%,0%
+gato_test4.jpg => 100%,0%
+perro_test0.jpg => 0%,100%
+perro_test1.jpg => 0%,100%
+perro_test2.jpg => 0%,100%
+perro_test3.jpg => 0%,100%
+perro_test4.jpg => 0%,100%
