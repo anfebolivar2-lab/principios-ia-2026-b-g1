@@ -7,16 +7,19 @@
 Herramientas comparadas:
 
 1. **Google Teachable Machine** para hacer un clasificador de imágenes.
-2. **Hugging Face Spaces / Hub** para usar un analizador de sentimiento de texto con un modelo pre-entrenado.
+2. **Hugging Face (Hub + Spaces)** para usar un analizador de sentimiento de texto con un modelo pre-entrenado.
 
 ## Contenido de la carpeta
 
 | Ruta | Descripción |
 |---|---|
 | `README.md` | Informe completo (este archivo). |
-| `capturas/teachable-machine/` | Capturas del proceso y del resultado del prototipo 1. |
-| `capturas/hugging-face/` | Capturas del proceso y del resultado del prototipo 2. |
-| `modelo-exportado/` | Modelo exportado desde Teachable Machine (`model.json`, `weights.bin`, `metadata.json`). |
+| `capturas/teachable-machine/` | 8 capturas del proceso y resultado del prototipo 1. |
+| `capturas/hugging-face/` | 3 capturas del prototipo 2. |
+| `modelo-exportado/` | Modelo exportado de Teachable Machine (TensorFlow.js): `model.json`, `weights.bin`, `metadata.json`. |
+| `imagenes-prueba/` | Las 10 fotos que el modelo nunca vio durante el entrenamiento. |
+| `codigo/hf_sentimiento.py` | Script que ejecuta el modelo de Hugging Face sobre las 6 frases. |
+| `codigo/resultados_prueba_teachable_machine.txt` | Confianza (Gato %, Perro %) de cada una de las 10 pruebas. |
 
 ---
 
@@ -38,66 +41,79 @@ Herramientas comparadas:
 
 ## 2. Práctica: mini-prototipos
 
-### 2.1 Prototipo 1: clasificador de gestos con Teachable Machine
+> **Nota de transparencia sobre el entorno.** Esta práctica se ejecutó en un entorno en la nube **sin cámara web**. Por eso el prototipo 1 no usa gestos con la webcam: usa fotos de gatos y perros subidas con el botón *Upload* de Teachable Machine. Las fotos provienen del dataset público [`microsoft/cats_vs_dogs`](https://huggingface.co/datasets/microsoft/cats_vs_dogs). En la vista previa de las capturas 06 y 07 se ve el aviso "error opening your webcam" por la misma razón; las barras de *Output* sí corresponden a la foto subida. Teachable Machine se manejó con un navegador automatizado (Playwright), con los mismos pasos que haría una persona.
 
-**Objetivo:** clasificar con la cámara web tres clases: `Pulgar arriba`, `Pulgar abajo` y `Fondo` (sin mano).
+### 2.1 Prototipo 1: clasificador de imágenes Gato vs. Perro (Teachable Machine)
+
+**Objetivo:** clasificar una foto como `Gato` o `Perro`.
 
 **Pasos realizados:**
 
-1. Entrar a <https://teachablemachine.withgoogle.com/train> → *Image Project* → *Standard image model*.
-2. Renombrar las clases: `Pulgar arriba`, `Pulgar abajo`, `Fondo`.
-3. Capturar con *Webcam → Hold to Record* unas 150 imágenes por clase, variando la distancia, el ángulo y la mano.
-4. Presionar **Train Model** (configuración por defecto: 50 épocas, *batch size* 16, *learning rate* 0.001).
-5. Probar en la vista *Preview* con gestos nuevos y revisar *Advanced → Under the hood* (accuracy por clase y matriz de confusión).
-6. Exportar con **Export Model → TensorFlow.js → Download** y guardar los archivos en `modelo-exportado/`.
+1. Abrir <https://teachablemachine.withgoogle.com/train/image> (*Image Project → Standard image model*).
+2. Renombrar las dos clases a `Gato` y `Perro`.
+3. Subir **40 fotos por clase** con *Upload* (80 en total). Teachable Machine separa por su cuenta el 15 % para validación (6 por clase).
+4. Presionar **Train Model** con la configuración por defecto: 50 épocas, *batch size* 16, *learning rate* 0.001.
+5. Abrir *Advanced → Under the hood* para ver la precisión por clase y la matriz de confusión.
+6. Probar el modelo con las **10 fotos nuevas** de `imagenes-prueba/` (5 gatos y 5 perros que no estaban en el entrenamiento).
+7. **Export Model → TensorFlow.js → Download** y guardar los archivos en `modelo-exportado/`.
 
 **Evidencia:**
 
 | Paso | Captura |
 |---|---|
-| Proyecto creado y clases definidas | ![clases](capturas/teachable-machine/01-clases.png) |
-| Muestras cargadas por clase | ![muestras](capturas/teachable-machine/02-muestras.png) |
-| Entrenamiento | ![entrenamiento](capturas/teachable-machine/03-entrenamiento.png) |
-| Resultado: predicción "Pulgar arriba" | ![pred1](capturas/teachable-machine/04-prediccion-arriba.png) |
-| Resultado: predicción "Pulgar abajo" | ![pred2](capturas/teachable-machine/05-prediccion-abajo.png) |
-| Accuracy por clase / matriz de confusión | ![matriz](capturas/teachable-machine/06-matriz-confusion.png) |
-| Exportación del modelo | ![export](capturas/teachable-machine/07-exportar.png) |
+| Clases renombradas | ![clases](capturas/teachable-machine/01-clases.png) |
+| 40 muestras por clase cargadas | ![muestras](capturas/teachable-machine/02-muestras.png) |
+| Modelo entrenado ("Model Trained") | ![entrenado](capturas/teachable-machine/03-entrenado.png) |
+| Parámetros de entrenamiento | ![config](capturas/teachable-machine/04-configuracion.png) |
+| Precisión por clase y matriz de confusión | ![matriz](capturas/teachable-machine/05-metricas-matriz-confusion.png) |
+| Predicción con foto nueva de gato | ![gato](capturas/teachable-machine/06-prediccion-gato.png) |
+| Predicción con foto nueva de perro | ![perro](capturas/teachable-machine/07-prediccion-perro.png) |
+| Exportación del modelo | ![export](capturas/teachable-machine/08-exportar.png) |
 
-**Resultados observados:** _(completar con lo que viste)_
+**Resultados observados:**
 
-- Accuracy por clase: Pulgar arriba ___ %, Pulgar abajo ___ %, Fondo ___ %.
-- El modelo falla cuando: _(por ejemplo, con otra iluminación, otra persona o la mano de lado)_.
+| Evaluación | Resultado |
+|---|---|
+| Precisión por clase (validación de TM, 6 fotos por clase) | Gato **0.83**, Perro **1.00** |
+| Matriz de confusión (validación) | 5 gatos bien, **1 gato clasificado como perro**, 6 perros bien |
+| 10 fotos nuevas (`imagenes-prueba/`) | **10 de 10 correctas**; la confianza fue 100 % en todas (ver `codigo/resultados_prueba_teachable_machine.txt`) |
+
+Lectura de los resultados: la validación interna es muy pequeña (12 fotos), por lo que un solo error mueve la precisión de Gato a 0.83. Las 10 fotos nuevas salieron perfectas, pero son pocas y de buena calidad, así que **no demuestran que el modelo generalice bien**. Una confianza del 100 % en todas las pruebas también sugiere que el modelo está muy seguro aun cuando tiene pocos datos, algo que conviene no tomar al pie de la letra.
 
 ### 2.2 Prototipo 2: analizador de sentimiento con Hugging Face
 
-**Objetivo:** clasificar frases en español como **positivas, neutrales o negativas** usando un modelo pre-entrenado, sin entrenar nada.
+**Objetivo:** clasificar frases en español como positivas, neutrales o negativas con un modelo pre-entrenado, **sin entrenar nada** (solo inferencia).
+
+**Modelo:** [`cardiffnlp/twitter-xlm-roberta-base-sentiment`](https://huggingface.co/cardiffnlp/twitter-xlm-roberta-base-sentiment). Según su *Model Card*, es un XLM-RoBERTa-base multilingüe entrenado con unos 198 millones de tweets y ajustado (*fine-tuned*) para sentimiento en 8 idiomas (árabe, inglés, francés, alemán, hindi, italiano, español y portugués).
 
 **Pasos realizados:**
 
-1. Entrar a <https://huggingface.co/spaces> y buscar `sentiment analysis`, o abrir directamente la página del modelo `cardiffnlp/twitter-xlm-roberta-base-sentiment` (multilingüe), que tiene un *widget* de inferencia.
-2. Leer la *Model Card*: arquitectura (XLM-RoBERTa), datos de entrenamiento (tweets en varios idiomas) y limitaciones.
-3. Escribir frases de prueba y anotar la etiqueta y la confianza que devuelve el modelo.
-4. Probar casos difíciles: sarcasmo, jerga colombiana y negaciones.
+1. Buscar `sentiment` en Hugging Face Spaces y abrir la página del modelo para leer su *Model Card*.
+2. Ejecutar el modelo con la librería `transformers` (`pipeline("sentiment-analysis", ...)`), que es el mismo modelo que usan el widget y los Spaces. El script está en `codigo/hf_sentimiento.py`.
+3. Probar 6 frases, incluidos casos difíciles (sarcasmo, jerga colombiana y negación).
 
-**Frases de prueba y resultados:** _(completar con lo que devolvió el modelo)_
+**Resultados reales:**
 
-| # | Frase | Esperado | Predicción del modelo | Confianza |
-|---|---|---|---|---|
-| 1 | "Me encantó la clase de hoy, aprendí muchísimo." | Positivo | | |
-| 2 | "El servicio fue pésimo y nadie me ayudó." | Negativo | | |
-| 3 | "Mañana hay parcial a las 8." | Neutral | | |
-| 4 | "Qué belleza, otra vez se fue la luz." (sarcasmo) | Negativo | | |
-| 5 | "Ese parcero es una chimba." (jerga) | Positivo | | |
-| 6 | "No estuvo nada mal." (negación) | Positivo | | |
+| # | Frase | Esperado | Predicción del modelo | Confianza | ¿Acertó? |
+|---|---|---|---|---|---|
+| 1 | "Me encantó la clase de hoy, aprendí muchísimo." | Positivo | positive | 0.948 | Sí |
+| 2 | "El servicio fue pésimo y nadie me ayudó." | Negativo | negative | 0.941 | Sí |
+| 3 | "Mañana hay parcial a las 8." | Neutral | neutral | 0.709 | Sí |
+| 4 | "Qué belleza, otra vez se fue la luz." (sarcasmo) | Negativo | **positive** | 0.846 | **No** |
+| 5 | "Ese parcero es una chimba." (jerga) | Positivo | positive | 0.937 | Sí |
+| 6 | "No estuvo nada mal." (negación) | Positivo | positive | 0.431 | Sí, pero con baja confianza |
+
+Acertó **5 de 6**. La falla clara es el sarcasmo (caso 4), y además lo clasificó como positivo con una confianza alta (0.846).
 
 **Evidencia:**
 
 | Paso | Captura |
 |---|---|
-| Página del Space / modelo y su Model Card | ![modelo](capturas/hugging-face/01-model-card.png) |
-| Frase positiva | ![pos](capturas/hugging-face/02-positiva.png) |
-| Frase negativa | ![neg](capturas/hugging-face/03-negativa.png) |
-| Caso difícil (sarcasmo / jerga) | ![dificil](capturas/hugging-face/04-caso-dificil.png) |
+| Búsqueda en Hugging Face Spaces | ![spaces](capturas/hugging-face/01-spaces-busqueda.png) |
+| Página del modelo y su *Model Card* | ![modelo](capturas/hugging-face/02-model-card.png) |
+| Salida de la inferencia sobre las 6 frases | ![inferencia](capturas/hugging-face/03-inferencia.png) |
+
+La captura 03 es una imagen generada con la salida real del script (verde = acierto, rojo = fallo). No es una captura de un widget web: la inferencia se corrió localmente porque el servicio de inferencia en línea de Hugging Face no estaba accesible desde este entorno.
 
 ---
 
@@ -115,15 +131,15 @@ Herramientas comparadas:
 
 ---
 
-## 4. Reflexión ética: sesgo en los datos
+## 4. Reflexión ética: sesgo y falsa seguridad
 
-**Limitación identificada: el sesgo de representación en Teachable Machine (y el sesgo heredado en Hugging Face).**
+**Limitación identificada (observada en el prototipo 2): el modelo falla con el sarcasmo y lo hace con mucha seguridad.**
 
-En Teachable Machine el modelo solo "conoce" lo que se le mostró. Si todas las muestras de "Pulgar arriba" se graban con **una sola mano, un solo tono de piel, la misma luz y el mismo fondo**, el modelo puede aprender atajos: por ejemplo, el color del fondo o de la piel en lugar de la forma del gesto. Al probarlo con otra persona, sobre todo con un tono de piel distinto o con poca luz, la confianza baja o la predicción falla. En un juego no pasa nada grave, pero el mismo mecanismo en un sistema de acceso, de vigilancia o de diagnóstico médico **discriminaría a los grupos que no estuvieron en los datos de entrenamiento**. La herramienta no advierte de esto, y su facilidad de uso puede dar una falsa sensación de que el modelo "funciona" porque obtiene un 100 % de accuracy sobre los mismos datos con los que se entrenó.
+La frase "Qué belleza, otra vez se fue la luz." es una queja, pero el modelo la clasificó como **positiva con 0.846 de confianza**. Y "No estuvo nada mal." (una valoración positiva por negación) recibió solo 0.431. El modelo se guía por palabras de apariencia positiva ("belleza") y no entiende la intención. Esto se debe a que se entrenó con tweets en idiomas muy distintos: el español colombiano y el tono irónico no son el centro de sus datos. Si una empresa o una universidad usara este modelo para moderar comentarios o medir la satisfacción de estudiantes, **las quejas sarcásticas se contarían como elogios**, y los dialectos o comunidades menos representados en los datos quedarían peor atendidos. El riesgo está en que la herramienta devuelve un número de confianza alto que parece una garantía, aunque se equivoque.
 
-En Hugging Face el problema cambia de forma: el usuario **hereda sesgos que no puede ver**. Un modelo de sentimiento entrenado mayormente con tweets en inglés o en español "estándar" puede clasificar como negativas expresiones colombianas positivas ("una chimba") o no detectar el sarcasmo. Si ese modelo se usa para moderar comentarios o evaluar clientes, ciertos dialectos y comunidades quedan perjudicados de forma sistemática.
+**Observación relacionada en Teachable Machine (prototipo 1):** el modelo dio 100 % de confianza en las 10 pruebas, pero se entrenó con solo 40 fotos por clase, tomadas de un dataset de internet y sin variedad de luz, raza, ángulo o fondos. La herramienta no advierte que esa seguridad no equivale a un buen desempeño en el mundo real. Lo mismo, aplicado a personas (por ejemplo rostros o gestos), discriminaría a quienes no estuvieron en los datos de entrenamiento. Además, la validación interna solo usa 6 fotos por clase, así que la métrica es muy poco fiable.
 
-**Mitigaciones:** recoger datos diversos (personas, luz, fondos), evaluar con un conjunto de prueba separado y con personas que no participaron en el entrenamiento, leer la *Model Card* antes de usar un modelo y documentar para qué **no** debe usarse el prototipo.
+**Mitigaciones:** leer la *Model Card* antes de usar un modelo; probar con casos difíciles propios de la comunidad de uso (jerga, sarcasmo, otros dialectos); evaluar con un conjunto de prueba más grande y diverso; no interpretar la confianza del modelo como probabilidad de acierto; y mantener una revisión humana cuando se usen estos modelos para decisiones que afecten a personas.
 
 ---
 
