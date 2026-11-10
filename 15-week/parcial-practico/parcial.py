@@ -5,12 +5,19 @@ Uso:
   python parcial.py --csv datos.csv --target columna  # cualquier CSV con columna objetivo
 """
 import argparse
+import os
+
+import joblib
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 import pandas as pd
 from sklearn.datasets import load_breast_cancer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score
+from sklearn.metrics import (ConfusionMatrixDisplay, accuracy_score, classification_report,
+                             confusion_matrix, f1_score)
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -50,12 +57,20 @@ for nombre, m in modelos.items():
 
 # 3. EVALUACION ------------------------------------------------------------
 mejor = max(resultados, key=lambda k: resultados[k][0])
-_, _, pred = resultados[mejor]
+_, modelo_final, pred = resultados[mejor]
 print(f"\n=== Mejor modelo: {mejor} ===")
 print(f"Accuracy: {accuracy_score(y_te, pred):.4f}")
 print(f"F1 (ponderado): {f1_score(y_te, pred, average='weighted'):.4f}")
 print("Matriz de confusion:\n", confusion_matrix(y_te, pred))
 print(classification_report(y_te, pred))
+
+# Artefactos de la entrega
+os.makedirs("salida", exist_ok=True)
+joblib.dump(modelo_final, "salida/modelo.joblib")
+ConfusionMatrixDisplay.from_predictions(y_te, pred)
+plt.title(f"Matriz de confusion - {mejor}")
+plt.savefig("salida/matriz_confusion.png", dpi=120, bbox_inches="tight")
+print("\nGuardado: salida/modelo.joblib y salida/matriz_confusion.png")
 
 # 4. LIMITACION ETICA ------------------------------------------------------
 print("""LIMITACION ETICA
