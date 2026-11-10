@@ -26,6 +26,7 @@ from sklearn.preprocessing import StandardScaler
 ap = argparse.ArgumentParser()
 ap.add_argument("--csv")
 ap.add_argument("--target", default="target")
+ap.add_argument("--etica", help="archivo .txt con la limitacion etica de TU problema")
 args = ap.parse_args()
 
 if args.csv:
@@ -73,9 +74,10 @@ plt.savefig("salida/matriz_confusion.png", dpi=120, bbox_inches="tight")
 print("\nGuardado: salida/modelo.joblib y salida/matriz_confusion.png")
 
 # 4. LIMITACION ETICA ------------------------------------------------------
-print("""LIMITACION ETICA
+ETICA_POR_DEFECTO = """LIMITACION ETICA
 - Los falsos negativos (tumor maligno clasificado como benigno) retrasan un
   tratamiento y son mas graves que un falso positivo; accuracy alta no basta.
 - El dataset (Wisconsin) es pequeno y de una poblacion/equipo clinico concreto:
   puede rendir peor en otros grupos demograficos y hospitales (sesgo de datos).
-- Debe ser apoyo al criterio medico, no reemplazarlo (responsabilidad humana).""")
+- Debe ser apoyo al criterio medico, no reemplazarlo (responsabilidad humana)"""
+print(open(args.etica, encoding="utf-8").read() if args.etica else ETICA_POR_DEFECTO)
