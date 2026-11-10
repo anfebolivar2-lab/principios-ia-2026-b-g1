@@ -1,0 +1,7 @@
+LIMITACION ETICA
+- Profecia autocumplida: etiquetar a un estudiante como "reprobara" puede llevar a
+  esperar menos de el y darle menos oportunidades, empeorando el resultado predicho.
+- Sesgo de datos: variables como "trabaja" reflejan condiciones sociales, no esfuerzo;
+  el modelo penaliza a quien debe trabajar para estudiar y un accuracy alto no lo muestra.
+- Mitigacion: usar la prediccion solo para ofrecer apoyo (tutorias), revisar el
+  desempeno por grupo y dejar la decision final a una persona.

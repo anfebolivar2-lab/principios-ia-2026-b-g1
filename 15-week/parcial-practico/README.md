@@ -15,3 +15,10 @@ python parcial.py --csv datos.csv --target clase   # otro problema
 4. **Limitacion etica**: los falsos negativos (maligno clasificado como benigno) retrasan el tratamiento, por lo que accuracy alta no basta; el dataset proviene de una poblacion limitada (sesgo de datos) y el modelo solo debe apoyar, no reemplazar, al medico.
 
 Salidas en `salida/`: `modelo.joblib`, `matriz_confusion.png`.
+
+## Practica
+`practica/` trae un ejercicio resuelto (estudiantes aprueba/reprueba, datos sinteticos):
+```bash
+cd practica && python ../parcial.py --csv estudiantes.csv --target aprobo --etica etica.txt
+```
+Con `--etica` usas la limitacion de TU problema; sin el, se imprime la de salud.
