@@ -24,4 +24,4 @@ cd practica && python ../parcial.py --csv estudiantes.csv --target aprobo --etic
 Con `--etica` usas la limitacion de TU problema; sin el, se imprime la de salud.
 
 ## Colab
-[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anfebolivar2-lab/principios-ia-2026-b-g1/blob/claude/parcial-practico-corte-3-ia-gmel5f/15-week/parcial-practico/parcial_colab.ipynb)
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anfebolivar2-lab/principios-ia-2026-b-g1/blob/main/15-week/parcial-practico/parcial_colab.ipynb)
