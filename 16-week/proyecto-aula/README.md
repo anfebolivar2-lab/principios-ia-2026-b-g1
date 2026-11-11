@@ -3,7 +3,7 @@
 Cuaderno individual de Principios de IA 2026-B. Entrega final: viernes 20 de noviembre, 23:59 (Moodle, actividad `c3-project`).
 
 ## Archivos
-- `proyecto-aula.ipynb`: cuaderno con las diez partes de la plantilla, ya ejecutado (programa + 12 pruebas en CORRECTO).
+- `proyecto-aula.ipynb`: cuaderno con las diez partes de la plantilla, ya ejecutado (programa + 17 pruebas en CORRECTO).
 - `formato-FO-IV-159.xlsx`: formato institucional diligenciado desde el cuaderno. La hoja ESTUDIANTE está vacía a propósito (datos personales): se llena y se entrega solo por Moodle, no se sube a GitHub.
 
 ## Qué falta (solo lo puede hacer el estudiante)
