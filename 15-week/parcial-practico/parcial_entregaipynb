@@ -1,0 +1,262 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/anfebolivar2-lab/principios-ia-2026-b-g1/blob/main/15-week/parcial-practico/parcial_entregaipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "l500iIoh7LdR"
+      },
+      "source": [
+        "# Parcial practico - Corte 3\n",
+        "Clasificacion end-to-end con scikit-learn. Ejecuta las celdas en orden (Entorno > Ejecutar todo)."
+      ],
+      "id": "l500iIoh7LdR"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "jVJLmybm7LdZ"
+      },
+      "source": [
+        "## 1. Preparar el entorno"
+      ],
+      "id": "jVJLmybm7LdZ"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "dOfMo7iD7Lda",
+        "outputId": "1b37621b-1b62-4d5e-da97-4dca9cd13722"
+      },
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "/content/principios-ia-2026-b-g1/15-week/parcial-practico\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "if not os.path.exists(\"/content/principios-ia-2026-b-g1\"):\n",
+        "    !git clone -q https://github.com/anfebolivar2-lab/principios-ia-2026-b-g1.git\n",
+        "%cd /content/principios-ia-2026-b-g1/15-week/parcial-practico\n",
+        "!pip install -q -r requirements.txt"
+      ],
+      "id": "dOfMo7iD7Lda"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "RK0wBpMR7Ldc"
+      },
+      "source": [
+        "## 2. Practica (estudiantes aprueba / reprueba)"
+      ],
+      "id": "RK0wBpMR7Ldc"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xAJlqUjI7Ldd",
+        "outputId": "abae8bf8-d7bc-4dad-d057-451c22bf9eb3"
+      },
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Datos: 300 filas, 4 variables | clases:\n",
+            "aprobo\n",
+            "0    150\n",
+            "1    150\n",
+            "Name: count, dtype: int64\n",
+            "\n",
+            "Regresion logistica: CV-F1=0.811 | test Accuracy=0.817 | test F1=0.816\n",
+            "Random Forest: CV-F1=0.791 | test Accuracy=0.817 | test F1=0.815\n",
+            "\n",
+            "=== Mejor modelo: Regresion logistica ===\n",
+            "Accuracy: 0.8167\n",
+            "F1 (ponderado): 0.8162\n",
+            "Matriz de confusion:\n",
+            " [[23  7]\n",
+            " [ 4 26]]\n",
+            "              precision    recall  f1-score   support\n",
+            "\n",
+            "           0       0.85      0.77      0.81        30\n",
+            "           1       0.79      0.87      0.83        30\n",
+            "\n",
+            "    accuracy                           0.82        60\n",
+            "   macro avg       0.82      0.82      0.82        60\n",
+            "weighted avg       0.82      0.82      0.82        60\n",
+            "\n",
+            "\n",
+            "Guardado: salida/modelo.joblib y salida/matriz_confusion.png\n",
+            "LIMITACION ETICA\n",
+            "- Profecia autocumplida: etiquetar a un estudiante como \"reprobara\" puede llevar a\n",
+            "  esperar menos de el y darle menos oportunidades, empeorando el resultado predicho.\n",
+            "- Sesgo de datos: variables como \"trabaja\" reflejan condiciones sociales, no esfuerzo;\n",
+            "  el modelo penaliza a quien debe trabajar para estudiar y un accuracy alto no lo muestra.\n",
+            "- Mitigacion: usar la prediccion solo para ofrecer apoyo (tutorias), revisar el\n",
+            "  desempeno por grupo y dejar la decision final a una persona.\n",
+            "\n"
+          ]
+        }
+      ],
+      "source": [
+        "!python parcial.py --csv practica/estudiantes.csv --target aprobo --etica practica/etica.txt"
+      ],
+      "id": "xAJlqUjI7Ldd"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "sxUfV4007Lde"
+      },
+      "source": [
+        "## 3. Parcial real\n",
+        "Sube tu CSV con el icono de carpeta (panel izquierdo) y ajusta `CSV` y `TARGET`. Escribe la limitacion etica de TU problema en la celda siguiente."
+      ],
+      "id": "sxUfV4007Lde"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Z1EDSfzt7Lde"
+      },
+      "execution_count": 15,
+      "outputs": [],
+      "source": [
+        "CSV = \"datos.csv\"      # nombre del archivo subido\n",
+        "TARGET = \"columna\"     # columna que se quiere predecir"
+      ],
+      "id": "Z1EDSfzt7Lde"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7Yjirex37Ldf",
+        "outputId": "b7b07b56-505b-4887-cc60-5f2d3a5b1116"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting mi_etica.txt\n"
+          ]
+        }
+      ],
+      "source": [
+        "%%writefile mi_etica.txt\n",
+        "LIMITACION ETICA\n",
+        "- (Riesgo concreto de TU problema)\n",
+        "- (A quien afecta / sesgo de los datos)\n",
+        "- (Como se mitiga)"
+      ],
+      "id": "7Yjirex37Ldf"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "aUYxLc4n7Ldg",
+        "outputId": "41e1aad8-34ec-4e44-d048-4cdb3a959b32"
+      },
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Sube tu CSV 'datos.csv' (icono de carpeta, panel izquierdo) y vuelve a ejecutar esta celda.\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "if os.path.exists(CSV):\n",
+        "    !python parcial.py --csv {CSV} --target {TARGET} --etica mi_etica.txt\n",
+        "else:\n",
+        "    print(f\"Sube tu CSV '{CSV}' (icono de carpeta, panel izquierdo) y vuelve a ejecutar esta celda.\")"
+      ],
+      "id": "aUYxLc4n7Ldg"
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "pX-w77Gl7Ldh"
+      },
+      "source": [
+        "## 4. (Opcional) Teachable Machine\n",
+        "Sube `keras_model.h5`, `labels.txt` y la carpeta `prueba/<clase>/*.jpg` y ejecuta:"
+      ],
+      "id": "pX-w77Gl7Ldh"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "t3GisVaQ7Ldh",
+        "outputId": "fa64cc08-79cd-407c-e7de-ee4b9ae0d187"
+      },
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Celda opcional: sube keras_model.h5, labels.txt y la carpeta prueba/ para usarla.\n"
+          ]
+        }
+      ],
+      "source": [
+        "import os\n",
+        "if os.path.exists(\"keras_model.h5\"):\n",
+        "    !python evaluar_tm.py --modelo keras_model.h5 --labels labels.txt --prueba prueba/\n",
+        "else:\n",
+        "    print(\"Celda opcional: sube keras_model.h5, labels.txt y la carpeta prueba/ para usarla.\")"
+      ],
+      "id": "t3GisVaQ7Ldh"
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "name": "parcial_corte3.ipynb",
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
