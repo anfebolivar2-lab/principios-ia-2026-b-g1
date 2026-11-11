@@ -123,17 +123,44 @@ def manhattan_distance(state, goal_pos=_GOAL_POS):
       P("Fuente: <font face='Courier'>results.md</font> (salida de <font face='Courier'>compare.py</font>). Promedio de nodos "
         "expandidos: BFS 36 870 · UCS 46 419 · A* 316 (más de 100 veces menos).", SM)]
 
-s += [PageBreak(), P("Artefacto 2 · Corte 2 - Aprendizaje automático", H2),
-      tabla([["[COMPLETAR - no hay evidencia del Corte 2 en el repositorio]"],
-             ["Las carpetas <font face='Courier'>06-week</font> a <font face='Courier'>10-week</font> están vacías en este fork. "
-              "Elige tu mejor trabajo del Corte 2 (regresión lineal/logística, árboles, kNN, Naive Bayes, validación cruzada, "
-              "k-means o PCA), súbelo a su carpeta de semana y reemplaza este recuadro con: <b>ruta</b>, <b>por qué lo elegiste</b>, "
-              "un <b>fragmento de código</b> y una <b>captura</b> de resultados. Si tu trabajo del Corte 2 no está en Git, agrégalo "
-              "(por ejemplo <font face='Courier'>08-week/03-optional-activity/</font>) antes de la entrega."]],
+s += [PageBreak(), P("Artefacto 2 · Corte 2 - Clasificación de tumores y overfitting", H2),
+      P("<b>Ruta:</b> <font face='Courier'>08-week/proyecto-ml-cancer/</font> (<font face='Courier'>clasificacion_cancer.py</font>, "
+        "<font face='Courier'>resultados.md</font>, <font face='Courier'>figuras/</font>)."),
+      tabla([["Transparencia"],
+             ["Mi fork no tenía un trabajo propio del Corte 2 en Git, así que este mini-proyecto fue <b>construido con ayuda de una IA "
+              "(Claude)</b> durante la preparación del portafolio y está declarado así en su README. Lo incluyo porque cubre los temas "
+              "del Corte 2 y se puede reproducir (lo ejecuté de nuevo y los resultados fueron idénticos), pero <b>no lo presento como "
+              "una entrega original de ese corte</b>. Si tengo un trabajo propio del Corte 2, es el que debe ir aquí."]],
             [16.5*cm]),
-      Spacer(1, 4),
-      P("Sugerencia de redacción: conecta el artefacto con lo que luego usaste en el parcial (validación cruzada de 5 "
-        "folds, matriz de confusión, comparación de modelos), para mostrar la continuidad entre cortes.", SM),
+      Spacer(1, 6),
+      P("<b>Por qué lo elegí:</b> reúne en un solo experimento los conceptos del Corte 2: tres familias de modelos "
+        "(regresión logística, árbol de decisión y kNN), validación cruzada estratificada de 5 particiones, matriz de confusión, "
+        "curva ROC/AUC y una demostración de <i>overfitting</i> variando la profundidad del árbol. Además prepara el terreno para "
+        "el parcial del Corte 3, que reutiliza la misma idea de comparar modelos y mirar el tipo de error."),
+      code('''
+modelos = {
+    "Regresion logistica": make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000)),
+    "Arbol de decision (prof. 3)": DecisionTreeClassifier(max_depth=3, random_state=SEED),
+    "kNN (k=5)": make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=5)),
+}
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=SEED)
+cvs = cross_val_score(m, X_tr, y_tr, cv=cv)          # validacion cruzada
+auc = roc_auc_score(y_te, m.predict_proba(X_te)[:, 1])
+'''),
+      tabla([["Modelo", "CV 5-fold", "Accuracy test", "AUC test"],
+             ["Regresión logística", "0.979 ± 0.009", "0.986", "<b>0.998</b>"],
+             ["Árbol de decisión (prof. 3)", "0.939 ± 0.022", "0.944", "0.946"],
+             ["kNN (k=5)", "0.967 ± 0.014", "0.979", "0.984"]],
+            [6.5*cm, 3.5*cm, 3.5*cm, 3*cm]),
+      P("Datos: Breast Cancer Wisconsin, 569 casos (426 entrenamiento, 143 prueba; 212 malignos y 357 benignos). "
+        "Fuente: <font face='Courier'>08-week/proyecto-ml-cancer/resultados.md</font>.", SM),
+      KeepTogether([Image(os.path.join(AQUI, "evidencias", "matrices_confusion.png"), width=16*cm, height=16*cm*4/13, hAlign="CENTER"),
+                    P("Captura: matrices de confusión de los tres modelos en el conjunto de prueba.", SM)]),
+      KeepTogether([Image(os.path.join(AQUI, "evidencias", "overfitting.png"), width=8*cm, height=8*cm*4/6, hAlign="CENTER"),
+                    P("Captura: el árbol llega a 100 % en entrenamiento desde la profundidad 8 pero baja a 92 % en prueba (overfitting).", SM)]),
+      P("<b>Lectura:</b> el modelo lineal fue el mejor y el más simple. La regresión logística cometió 1 falso negativo "
+        "(maligno clasificado como benigno) en 143 casos; en diagnóstico ese es el error más costoso, por lo que mirar solo "
+        "la exactitud no basta. Esta idea la retomo en el Artefacto 3."),
       Spacer(1, 6)]
 
 s += [P("Artefacto 3 · Corte 3 - Clasificación end-to-end con limitación ética", H2),
@@ -192,7 +219,7 @@ s += [tabla([
      "Afinación de hiperparámetros, desbalance de clases, redes neuronales (no tengo evidencia propia de deep learning)."],
     ["<b>Evaluar</b><br/>(métricas y validación)", "<b>En desarrollo</b>",
      "Accuracy, F1 ponderado, matriz de confusión y reporte por clase; comparé modelos por F1 y no solo por accuracy "
-     "(captura en Sección 2).",
+     "(Artefacto 3). En el Artefacto 2 (hecho con apoyo de IA) practiqué validación cruzada, curva ROC/AUC y detección de overfitting.",
      "Curvas ROC/PR, intervalos de confianza, evaluación por subgrupos y elegir la métrica según el costo del error "
      "(p. ej. sensibilidad en salud)."],
     ["<b>Razonar éticamente</b>", "<b>En desarrollo</b>",
