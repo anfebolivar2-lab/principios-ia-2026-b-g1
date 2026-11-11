@@ -22,3 +22,6 @@ Salidas en `salida/`: `modelo.joblib`, `matriz_confusion.png`.
 cd practica && python ../parcial.py --csv estudiantes.csv --target aprobo --etica etica.txt
 ```
 Con `--etica` usas la limitacion de TU problema; sin el, se imprime la de salud.
+
+## Colab
+[![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anfebolivar2-lab/principios-ia-2026-b-g1/blob/main/15-week/parcial-practico/parcial_colab.ipynb)
