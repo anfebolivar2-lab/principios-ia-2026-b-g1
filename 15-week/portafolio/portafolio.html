@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<title>Portafolio de Competencias en IA</title>
+<style>
+@page { size: A4; margin: 18mm 17mm 18mm 17mm; }
+:root{ --ink:#1b2430; --mute:#5b6676; --acc:#0b5fa5; --line:#d5dbe3; --bg:#f4f7fb; }
+*{box-sizing:border-box}
+body{font:10.5pt/1.5 "DejaVu Sans","Helvetica",Arial,sans-serif;color:var(--ink);margin:0}
+h1{font-size:25pt;line-height:1.15;margin:0 0 6pt;color:var(--acc)}
+h2{font-size:15pt;color:var(--acc);border-bottom:2px solid var(--acc);padding-bottom:3pt;margin:0 0 9pt}
+h3{font-size:11.5pt;margin:12pt 0 3pt}
+p{margin:0 0 7pt;text-align:justify}
+.page{page-break-after:always}
+.page:last-child{page-break-after:auto}
+.cover{padding-top:48mm}
+.meta{margin-top:18pt;border-left:4px solid var(--acc);padding-left:10pt;color:var(--mute)}
+.meta b{color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:9pt;margin:6pt 0 9pt}
+th,td{border:1px solid var(--line);padding:4pt 6pt;text-align:left;vertical-align:top}
+th{background:var(--bg)}
+td.n,th.n{text-align:right}
+pre{break-inside:avoid;background:#0f1720;color:#e6edf5;font:8pt/1.4 "DejaVu Sans Mono",monospace;padding:8pt;border-radius:4pt;margin:5pt 0 9pt;white-space:pre-wrap}
+.box{background:var(--bg);border:1px solid var(--line);border-radius:4pt;padding:7pt 9pt;margin:6pt 0 9pt;font-size:9.5pt}
+.tag{display:inline-block;font-size:8pt;font-weight:bold;padding:1pt 6pt;border-radius:8pt;background:var(--acc);color:#fff}
+.bar{height:9pt;background:var(--acc);border-radius:2pt}
+.bar.g{background:#1d8a4d}
+ul{margin:0 0 8pt 14pt;padding:0} li{margin-bottom:3pt}
+.small{font-size:8.5pt;color:var(--mute)}
+.lv{font-weight:bold}
+</style></head><body>
+
+<section class="page cover">
+<div class="tag">CORTE 3 · CERTIFICACIÓN</div>
+<h1>Portafolio de Competencias en IA</h1>
+<p style="font-size:13pt;color:var(--mute)">Principios de Inteligencia Artificial · 2026-B</p>
+<div class="meta">
+<p><b>Estudiante:</b> Andrés Felipe Bolívar Arias<br>
+<b>Programa:</b> Ingeniería en Inteligencia Artificial — CORHUILA<br>
+<b>Grupo:</b> V (IPT)<br>
+<b>Repositorio:</b> anfebolivar2-lab/principios-ia-2026-b-g1 (fork del repositorio de la clase)<br>
+<b>Fecha:</b> noviembre de 2026</p></div>
+<h3 style="margin-top:26pt">Contenido</h3>
+<ol>
+<li>Reflexión de aprendizaje</li>
+<li>Los tres mejores artefactos del semestre</li>
+<li>Mapa de competencias</li>
+<li>Próximos pasos</li>
+</ol>
+<p class="small">Todas las evidencias (código, resultados y cuadernos) están en el repositorio, en las rutas indicadas en cada sección.</p>
+</section>
+
+<section class="page">
+<h2>1. Reflexión de aprendizaje</h2>
+
+<h3>El concepto más difícil: que una heurística sea «buena» de verdad</h3>
+<p>En la semana 4 implementé A* para el 8-puzzle y lo primero que funcionó fue el código; lo que me costó fue entender <i>por qué</i> era correcto. «Admisible» y «consistente» sonaban a lo mismo hasta que tuve que justificar, en el informe, por qué la distancia Manhattan nunca sobreestima (cada movimiento desplaza una sola ficha una sola casilla) y por qué la consistencia me permitía descartar entradas obsoletas de la cola de prioridad sin reabrir nodos. Un detalle que me obligó a pensar con más cuidado: mi instancia «Difícil» se generó con 24 movimientos de mezcla, pero la solución óptima fue de 20; los movimientos aleatorios se deshicieron parcialmente entre sí. Los «movimientos de mezcla» son una cota superior de la dificultad, no la dificultad.</p>
+
+<h3>El concepto más revelador: accuracy alta no significa modelo bueno</h3>
+<p>En el parcial del corte 3 entrené regresión logística y Random Forest con validación cruzada de 5 folds y ambos llegaron a un valor parecido (F1 ≈ 0,98 en cáncer de mama; 0,82 en mi ejercicio de práctica con estudiantes). Lo revelador vino al leer la matriz de confusión: en el problema de salud no todos los errores pesan igual, porque un falso negativo (maligno clasificado como benigno) retrasa un tratamiento. En el problema de estudiantes el riesgo es otro: etiquetar a alguien como «reprobará» puede producir una profecía autocumplida, y la variable «trabaja» refleja condiciones sociales, no esfuerzo. Ninguno de esos problemas aparece en el número de accuracy.</p>
+
+<h3>Cómo cambió mi visión de la IA</h3>
+<p>Antes pensaba la IA como «elegir el algoritmo más potente». Ahora la veo como una cadena de decisiones de ingeniería (formular el problema, escoger la métrica, validar, documentar límites) donde el algoritmo es la parte menos decisiva. La búsqueda me enseñó que la información del dominio vale más que la fuerza bruta: A* expandió 906 nodos donde BFS expandió 115 310 en la misma instancia. El aprendizaje automático me enseñó que la métrica que elijo define qué errores considero aceptables, y eso es una decisión humana, no técnica. Y el componente ético me enseñó que el sistema debe diseñarse como apoyo a una decisión humana, con mitigaciones explícitas, no como sustituto.</p>
+
+<div class="box"><b>Una lección de método.</b> Trabajé con ramas y pull requests (el parcial pasó por varias iteraciones: #2 a #5) y con Google Colab. Aprendí a dejar el resultado reproducible: semillas fijas, <code>requirements.txt</code>, scripts que regeneran las tablas y un README que explica cómo ejecutar cada entrega.</div>
+</section>
+
+<section class="page">
+<h2>2. Los tres mejores artefactos</h2>
+<p>Elegí un artefacto por corte. Criterio: que mostrara la competencia con mayor profundidad, que fuera reproducible y que dejara evidencia de análisis propio, no solo de código que corre.</p>
+
+<h3>Corte 1 — A* vs. BFS vs. UCS en el 8-puzzle <span class="tag">semana 4</span></h3>
+<p><b>Ruta:</b> <code>04-week/03-optional-activity/semana4-busqueda-informada/</code> (<code>puzzle8.py</code>, <code>compare.py</code>, <code>results.md</code>, <code>README.md</code>)</p>
+<p><b>Por qué lo elegí:</b> es el artefacto donde el razonamiento es más completo. Incluye la formulación formal del espacio de estados (estado, acciones, modelo de transición, costo, test de objetivo), la verificación de solubilidad por paridad de inversiones (solo 181 440 de las 362 880 permutaciones son alcanzables), la demostración de admisibilidad y consistencia de la heurística, y un experimento comparativo con cuatro instancias y métricas medidas (nodos expandidos, frontera máxima, tiempo).</p>
+<pre>def manhattan_distance(state, goal_pos=_GOAL_POS):
+    total = 0
+    for index, value in enumerate(state):
+        if value == 0: continue
+        r, c = divmod(index, 3); gr, gc = goal_pos[value]
+        total += abs(r - gr) + abs(c - gc)
+    return total</pre>
+<table>
+<tr><th>Instancia «Muy difícil»</th><th class="n">Movimientos</th><th class="n">Nodos expandidos</th><th>Escala</th></tr>
+<tr><td>BFS</td><td class="n">24</td><td class="n">115 310</td><td><div class="bar" style="width:83%"></div></td></tr>
+<tr><td>UCS</td><td class="n">24</td><td class="n">139 315</td><td><div class="bar" style="width:100%"></div></td></tr>
+<tr><td>A* (Manhattan)</td><td class="n">24</td><td class="n">906</td><td><div class="bar g" style="width:1%"></div></td></tr>
+</table>
+<p class="small">Resultado: los tres algoritmos hallan la solución óptima; A* lo hace con unas 150 veces menos nodos. Fuente: <code>results.md</code>.</p>
+<p><i>Mención adicional del corte:</i> <code>05-week/03-optional-activity/maze_agent.py</code>, agente de búsqueda (BFS y A*) para laberintos con entrada en lista o diccionario.</p>
+
+<h3>Corte 2 — Clasificación con validación cruzada y matriz de confusión <span class="tag">ejercicio de práctica</span></h3>
+<p><b>Ruta:</b> <code>15-week/parcial-practico/practica/</code> (<code>generar_estudiantes.py</code>, <code>estudiantes.csv</code>, <code>resultado.txt</code>, <code>etica.txt</code>)</p>
+<p><b>Por qué lo elegí:</b> aplica los contenidos del corte 2 (regresión logística, árboles/bosques, validación cruzada, matriz de confusión, F1) a un problema que yo definí: predecir si un estudiante aprueba. Lo valioso fue interpretar la matriz y no quedarme en la métrica global.</p>
+<table>
+<tr><th>Modelo</th><th class="n">F1 (CV, 5 folds)</th><th class="n">Accuracy (prueba)</th><th class="n">F1 (prueba)</th></tr>
+<tr><td>Regresión logística (con escalado)</td><td class="n">0,811</td><td class="n">0,817</td><td class="n">0,816</td></tr>
+<tr><td>Random Forest (200 árboles)</td><td class="n">0,791</td><td class="n">0,817</td><td class="n">0,815</td></tr>
+</table>
+<pre>Matriz de confusion (60 casos de prueba)      precision  recall
+ [[23  7]      clase 0 (reprueba)   0.85       0.77
+  [ 4 26]]     clase 1 (aprueba)    0.79       0.87</pre>
+<p>La regresión logística quedó como mejor modelo. Observé que se equivoca más al predecir «aprueba» para quien reprueba (7 casos) que al revés (4), y que con 300 filas sintéticas el desempeño es modesto; no lo presento como un modelo listo para usar.</p>
+<p class="small"><b>Nota de honestidad:</b> las carpetas de las semanas 6 a 10 de mi repositorio no contienen entregas propias; el trabajo de ML que puedo evidenciar con código y resultados es este ejercicio, realizado durante la preparación del parcial.</p>
+</section>
+
+<section class="page">
+<h3 style="margin-top:0">Corte 3 — Parcial: clasificación end-to-end con limitación ética <span class="tag">semana 15</span></h3>
+<p><b>Ruta:</b> <code>15-week/parcial-practico/</code> (<code>parcial.py</code>, <code>parcial_entrega.ipynb</code>, <code>parcial_colab.ipynb</code>, <code>README.md</code>, <code>requirements.txt</code>)</p>
+<p><b>Por qué lo elegí:</b> integra todo el semestre en un flujo reproducible: carga y limpieza (duplicados, nulos, one-hot), partición 80/20 estratificada, dos modelos comparados con validación cruzada, evaluación con accuracy, F1, matriz y reporte por clase, y una sección explícita de limitación ética. Además es parametrizable: <code>--csv</code>, <code>--target</code> y <code>--etica</code> permiten aplicarlo a otro problema sin tocar el código, y quedó disponible como cuaderno de Google Colab.</p>
+<pre>modelos = {
+  "Regresion logistica": make_pipeline(StandardScaler(),
+                                       LogisticRegression(max_iter=1000)),
+  "Random Forest": RandomForestClassifier(n_estimators=200, random_state=42),
+}
+for nombre, m in modelos.items():
+    m.fit(X_tr, y_tr)
+    cv = cross_val_score(m, X_tr, y_tr, cv=5, scoring="f1_weighted").mean()</pre>
+<div class="box"><b>Limitación ética documentada (problema de práctica):</b>
+<ul style="margin-bottom:0">
+<li><b>Profecía autocumplida:</b> etiquetar a un estudiante como «reprobará» puede reducir las oportunidades que se le dan y empeorar el resultado predicho.</li>
+<li><b>Sesgo de datos:</b> «trabaja» refleja condiciones sociales, no esfuerzo; el modelo penalizaría a quien debe trabajar para estudiar, y un accuracy alto no lo muestra.</li>
+<li><b>Mitigación:</b> usar la predicción solo para ofrecer apoyo (tutorías), revisar el desempeño por grupo y dejar la decisión final a una persona.</li>
+</ul></div>
+<p>En el conjunto por defecto (Breast Cancer Wisconsin, 569 muestras, 30 variables) el pipeline alcanzó Accuracy y F1 cercanos a 0,98 y guarda el modelo (<code>salida/modelo.joblib</code>) y la matriz de confusión (<code>salida/matriz_confusion.png</code>).</p>
+
+<h3>Resumen de la selección</h3>
+<table>
+<tr><th>Corte</th><th>Artefacto</th><th>Competencia principal</th></tr>
+<tr><td>1</td><td>A* vs. BFS vs. UCS (8-puzzle)</td><td>Buscar · Evaluar</td></tr>
+<tr><td>2</td><td>Clasificación de estudiantes con CV y matriz de confusión</td><td>Clasificar · Evaluar</td></tr>
+<tr><td>3</td><td>Parcial end-to-end con limitación ética</td><td>Clasificar · Razonar éticamente</td></tr>
+</table>
+</section>
+
+<section class="page">
+<h2>3. Mapa de competencias</h2>
+<p>Autoevaluación según las cuatro competencias del sílabo. Escala: <b>básico</b> / <b>en desarrollo</b> / <b>logrado</b>. Intenté ser estricto: «logrado» solo donde puedo mostrar evidencia y explicar el porqué.</p>
+<table>
+<tr><th style="width:15%">Competencia</th><th style="width:13%">Nivel</th><th>Evidencia</th><th style="width:28%">Lo que me falta</th></tr>
+<tr><td><b>Buscar</b><br>(espacios de estados, búsqueda informada y no informada)</td>
+<td class="lv">Logrado</td>
+<td>Formulé el 8-puzzle como espacio de estados, implementé BFS, UCS y A*, probé admisibilidad/consistencia de Manhattan y medí la diferencia (906 vs. 115 310 nodos en la instancia más difícil). Construí un agente de laberinto con BFS y A*.</td>
+<td>No he implementado búsqueda local ni metaheurísticas (hill climbing, recocido simulado) ni minimax con poda.</td></tr>
+<tr><td><b>Clasificar</b><br>(aprendizaje supervisado)</td>
+<td class="lv">En desarrollo</td>
+<td>Pipeline completo con escalado, one-hot, partición estratificada, regresión logística y Random Forest, validación cruzada y selección por F1 (<code>parcial.py</code>).</td>
+<td>Casi no ajusté hiperparámetros ni probé regularización o reducción de dimensionalidad; mis datos de práctica son sintéticos y pequeños.</td></tr>
+<tr><td><b>Evaluar</b><br>(métricas y validación)</td>
+<td class="lv">En desarrollo</td>
+<td>Comparé modelos con CV de 5 folds; interpreté la matriz de confusión, precisión y recall por clase (7 falsos positivos vs. 4 falsos negativos en el ejercicio de práctica).</td>
+<td>No trabajé curvas ROC/AUC ni análisis sesgo-varianza con curvas de aprendizaje, y no calculé intervalos de confianza para las métricas.</td></tr>
+<tr><td><b>Razonar éticamente</b><br>(impacto social e IA responsable)</td>
+<td class="lv">En desarrollo</td>
+<td>Documenté limitaciones éticas por problema (falsos negativos en salud; profecía autocumplida y sesgo en educación) y mitigaciones (apoyo, no sustitución; revisión por grupo).</td>
+<td>Mi análisis es cualitativo: aún no mido equidad con métricas por subgrupo ni uso herramientas como Fairlearn.</td></tr>
+</table>
+
+<div class="box"><b>Lectura global.</b> Mi punto más fuerte es la formulación y el análisis de algoritmos de búsqueda. Mi mayor oportunidad está en pasar del razonamiento ético descriptivo a uno <i>medido</i> y en profundizar la evaluación de modelos más allá de accuracy y F1.</div>
+</section>
+
+<section class="page">
+<h2>4. Próximos pasos</h2>
+<p>Las áreas que quiero profundizar salen directamente de los vacíos que identifiqué en el mapa de competencias. Cada una tiene un recurso y un entregable verificable.</p>
+<table>
+<tr><th style="width:21%">Área</th><th>Recurso</th><th style="width:30%">Entregable concreto</th></tr>
+<tr><td>Búsqueda local, metaheurísticas y juegos</td>
+<td>Russell &amp; Norvig, <i>Artificial Intelligence: A Modern Approach</i>, capítulos de búsqueda local y búsqueda adversarial.</td>
+<td>Resolver el problema de las n-reinas con hill climbing y recocido simulado, y un agente minimax con poda alfa-beta para tres en raya; comparar tasa de éxito.</td></tr>
+<tr><td>Machine learning aplicado y ajuste de modelos</td>
+<td>A. Géron, <i>Hands-On Machine Learning with Scikit-Learn and PyTorch</i>; documentación de scikit-learn (GridSearchCV, curvas de aprendizaje).</td>
+<td>Repetir el parcial con un dataset real en Kaggle, ajustando hiperparámetros y reportando curvas ROC y de aprendizaje.</td></tr>
+<tr><td>Redes neuronales y deep learning</td>
+<td>Curso de deep learning en Coursera o fast.ai (<i>Practical Deep Learning for Coders</i>).</td>
+<td>Clasificador de imágenes con transferencia de aprendizaje, publicado en el repositorio con su informe de métricas.</td></tr>
+<tr><td>Equidad y evaluación responsable</td>
+<td>Documentación de Fairlearn; <i>Fairness and Machine Learning</i> (Barocas, Hardt, Narayanan, de acceso libre).</td>
+<td>Medir diferencias de recall y de tasa de falsos positivos por subgrupo en el ejercicio de estudiantes y proponer una mitigación comprobable.</td></tr>
+<tr><td>Lógica difusa</td>
+<td>Material de la semana 12 del curso y la librería <code>scikit-fuzzy</code>.</td>
+<td>Controlador Mamdani sencillo (por ejemplo, ventilador según temperatura y humedad) con sus funciones de pertenencia.</td></tr>
+</table>
+
+<h3>Plan realista a corto plazo</h3>
+<ul>
+<li><b>Primeras 4 semanas:</b> metaheurísticas y minimax (entregables pequeños, uno por semana).</li>
+<li><b>Semanas 5 a 8:</b> segundo proyecto de clasificación sobre un dataset de Kaggle, con ajuste de hiperparámetros y ROC.</li>
+<li><b>Después:</b> el curso de deep learning y el análisis de equidad, cada uno con su carpeta, README y resultados reproducibles en mi repositorio.</li>
+</ul>
+<p>Para sostener el ritmo uso lo que aprendí de este curso: cada avance va en una rama con su pull request, un README que explica cómo reproducirlo y semillas fijas, de modo que cualquier resultado pueda verificarse.</p>
+</section>
+</body></html>
