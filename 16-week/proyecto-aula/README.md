@@ -9,7 +9,7 @@ Cuaderno individual de Principios de IA 2026-B. Entrega final: viernes 20 de nov
 ## Qué falta (solo lo puede hacer el estudiante)
 Todo lo marcado **[COMPLETAR]**:
 1. Nombre en la parte 9 (la declaración la firma usted, no la IA) y en la hoja ESTUDIANTE; semestre en el FO-IV-159.
-2. Bitácora (parte 5): hay 1 registro real, faltan **7**. Mejoras de prompt (parte 6): faltan **2 casos reales**. No se inventan: se llenan al usar la IA.
+2. Bitácora (parte 5): hay 2 registros reales, faltan **6**. Mejoras de prompt (parte 6): faltan **2 casos reales**. No se inventan: se llenan al usar la IA.
 3. Qué hizo usted (partes 8 y 9), y reescribir los comentarios del código con sus palabras.
 4. Comprobar las tres referencias del FO-IV-159 (dos ya se verificaron en la web; Russell y Norvig no).
 5. Subir el cuaderno a Colab (`Archivo · Subir cuaderno`), compartir con «Cualquier persona con el enlace · Lector», ejecutar «Reiniciar y ejecutar todo» y dejar el enlace en el texto en línea de `c3-project`.
