@@ -56,7 +56,7 @@ ul{margin:0 0 8pt 14pt;padding:0} li{margin-bottom:3pt}
 <p>En la semana 4 implementé A* para el 8-puzzle y lo primero que funcionó fue el código; lo que me costó fue entender <i>por qué</i> era correcto. «Admisible» y «consistente» sonaban a lo mismo hasta que tuve que justificar, en el informe, por qué la distancia Manhattan nunca sobreestima (cada movimiento desplaza una sola ficha una sola casilla) y por qué la consistencia me permitía descartar entradas obsoletas de la cola de prioridad sin reabrir nodos. Un detalle que me obligó a pensar con más cuidado: mi instancia «Difícil» se generó con 24 movimientos de mezcla, pero la solución óptima fue de 20; los movimientos aleatorios se deshicieron parcialmente entre sí. Los «movimientos de mezcla» son una cota superior de la dificultad, no la dificultad.</p>
 
 <h3>El concepto más revelador: accuracy alta no significa modelo bueno</h3>
-<p>En el parcial del corte 3 entrené regresión logística y Random Forest con validación cruzada de 5 folds y ambos llegaron a un valor parecido (F1 ≈ 0,98 en cáncer de mama; 0,82 en mi ejercicio de práctica con estudiantes). Lo revelador vino al leer la matriz de confusión: en el problema de salud no todos los errores pesan igual, porque un falso negativo (maligno clasificado como benigno) retrasa un tratamiento. En el problema de estudiantes el riesgo es otro: etiquetar a alguien como «reprobará» puede producir una profecía autocumplida, y la variable «trabaja» refleja condiciones sociales, no esfuerzo. Ninguno de esos problemas aparece en el número de accuracy.</p>
+<p>En el parcial del corte 3 entrené regresión logística y Random Forest con validación cruzada de 5 folds y la regresión logística ganó en ambos problemas (F1 ≈ 0,98 en cáncer de mama; 0,82 en mi ejercicio de práctica con estudiantes). Lo revelador vino al leer la matriz de confusión: en el problema de salud no todos los errores pesan igual, porque un falso negativo (maligno clasificado como benigno) retrasa un tratamiento. En el problema de estudiantes el riesgo es otro: etiquetar a alguien como «reprobará» puede producir una profecía autocumplida, y la variable «trabaja» refleja condiciones sociales, no esfuerzo. Ninguno de esos problemas aparece en el número de accuracy.</p>
 
 <h3>Cómo cambió mi visión de la IA</h3>
 <p>Antes pensaba la IA como «elegir el algoritmo más potente». Ahora la veo como una cadena de decisiones de ingeniería (formular el problema, escoger la métrica, validar, documentar límites) donde el algoritmo es la parte menos decisiva. La búsqueda me enseñó que la información del dominio vale más que la fuerza bruta: A* expandió 906 nodos donde BFS expandió 115 310 en la misma instancia. El aprendizaje automático me enseñó que la métrica que elijo define qué errores considero aceptables, y eso es una decisión humana, no técnica. Y el componente ético me enseñó que el sistema debe diseñarse como apoyo a una decisión humana, con mitigaciones explícitas, no como sustituto.</p>
@@ -186,5 +186,27 @@ for nombre, m in modelos.items():
 <li><b>Después:</b> el curso de deep learning y el análisis de equidad, cada uno con su carpeta, README y resultados reproducibles en mi repositorio.</li>
 </ul>
 <p>Para sostener el ritmo uso lo que aprendí de este curso: cada avance va en una rama con su pull request, un README que explica cómo reproducirlo y semillas fijas, de modo que cualquier resultado pueda verificarse.</p>
+</section>
+<section class="page">
+<h2>Anexo. Evidencias de ejecución</h2>
+<p>Salidas reales obtenidas al volver a ejecutar mis scripts del repositorio el 11 de noviembre de 2026; coinciden con los resultados reportados en las secciones anteriores.</p>
+<h3>A. Parcial sobre Breast Cancer Wisconsin (<code>python parcial.py</code>)</h3>
+<pre>Datos: 569 filas, 30 variables
+Regresion logistica: CV-F1=0.980 | test Accuracy=0.982 | test F1=0.982
+Random Forest:       CV-F1=0.960 | test Accuracy=0.956 | test F1=0.956
+=== Mejor modelo: Regresion logistica ===</pre>
+<h3>B. Ejercicio de práctica con estudiantes (<code>--csv estudiantes.csv --target aprobo</code>)</h3>
+<pre>Datos: 300 filas, 4 variables
+Regresion logistica: CV-F1=0.811 | test Accuracy=0.817 | test F1=0.816
+Random Forest:       CV-F1=0.791 | test Accuracy=0.817 | test F1=0.815</pre>
+<table><tr>
+<td style="border:none;text-align:center"><img src="evidencias/matriz_cancer.png" style="width:100%"><br><span class="small">Matriz de confusión · cáncer de mama</span></td>
+<td style="border:none;text-align:center"><img src="evidencias/matriz_estudiantes.png" style="width:100%"><br><span class="small">Matriz de confusión · estudiantes</span></td>
+</tr></table>
+<h3>C. Comparación de búsqueda (<code>python compare.py</code>)</h3>
+<pre>Promedio de nodos expandidos por algoritmo:
+  BFS: 36870.2
+  UCS: 46418.8
+  A*: 316.2</pre>
 </section>
 </body></html>
